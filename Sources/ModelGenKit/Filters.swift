@@ -54,3 +54,34 @@ func replaceKeywords(_ currentName: String) -> String {
     }
     return currentName
 }
+
+func backticksReservedWords(input: Any?) -> Any? {
+    guard let string = input as? String else {
+        return nil
+    }
+    
+    let reservedWords = ["associatedtype", "class", "deinit", "enum", "extension", "fileprivate", "func", "import", "init", "inout", "internal", "let", "open", "operator", "private", "precedencegroup", "protocol", "public", "rethrows", "static", "struct", "subscript", "typealias", "var", "associativity", "convenience", "didSet", "dynamic", "final", "get", "indirect", "infix", "lazy", "left", "mutating", "none", "nonmutating", "optional", "override", "postfix", "precedence", "prefix", "Protocol", "required", "right", "set", "some", "Type", "unowned", "weak", "willSet", "Any", "as", "catch", "false", "is", "nil", "rethrows", "self", "Self", "super", "throw", "throws", "true", "try", "break", "case", "catch", "continue", "default", "defer", "do", "else", "fallthrough", "for", "guard", "if", "in", "repeat", "return", "throw", "switch", "where", "while"
+    ]
+    
+    if reservedWords.contains(string) {
+        return "`\(string)`"
+    } else {
+        return string
+    }
+}
+
+func replaceSnakeSize(input: Any?) -> Any? {
+    guard
+        let string = input as? String,
+        let regex = try? NSRegularExpression(pattern: "([0-9])_([0-9])", options: .caseInsensitive)
+    else {
+        return nil
+    }
+    
+    return regex.stringByReplacingMatches(
+        in: string,
+        options: [],
+        range: NSRange(location: 0, length: string.count),
+        withTemplate: "$1x$2"
+    )
+}

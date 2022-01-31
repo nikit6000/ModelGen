@@ -73,9 +73,13 @@ public func parse(output: OutputDestination, template: String, lang: String, pat
     do {
         try parser.parseFile(at: path)
 
+        var environment = stencilSwiftEnvironment()
+        
+        environment.extensions.append(ModelGenExtensions())
+        
         let language = Language(rawValue: lang) ?? .swift
         let tempatePath = try validate(template)
-        let template = try StencilSwiftTemplate(templateString: tempatePath.read(), environment: stencilSwiftEnvironment())
+        let template = try StencilSwiftTemplate(templateString: tempatePath.read(), environment: environment)
         let context = try parser.stencilContextFor(language)
         let enriched = try StencilContext.enrich(context: context, parameters: [])
         let rendered = try template.render(enriched)
